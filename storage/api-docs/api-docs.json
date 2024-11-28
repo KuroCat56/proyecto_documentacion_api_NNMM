@@ -1,0 +1,210 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Documentacion de API de Nelson Minero",
+        "description": "Api desarrollada por Nelson Minero UFG",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "servidor local de desarrollo"
+        },
+        {
+            "url": "http://test.example.com",
+            "description": "servidor para pruebas"
+        },
+        {
+            "url": "http://nnmm.example.com",
+            "description": "servidor local de producción"
+        }
+    ],
+    "paths": {
+        "/api/obtenerpersona/{id}": {
+            "get": {
+                "tags": [
+                    "Persona"
+                ],
+                "summary": "Obtener un registro de persona",
+                "description": "Con este endpoint se obtiene los detalles de un registro de persona",
+                "operationId": "50f90670199951e5b6ca6aa8cb89d77f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Buscar por ID persona",
+                        "required": true
+                    },
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Parámetro de idioma, aplicar RFC2616",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No hay error, se devolvieron los datos correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id_persona": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "nombres": {
+                                            "type": "string",
+                                            "example": "Nelson Neftali"
+                                        },
+                                        "apellidos": {
+                                            "type": "string",
+                                            "example": "Minero Maradiaga"
+                                        },
+                                        "fechadenacimiento": {
+                                            "type": "string",
+                                            "example": "2001-01-30"
+                                        },
+                                        "direccion": {
+                                            "type": "string",
+                                            "example": "SS, El Salvador"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No se encontró la ruta endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "false"
+                                        },
+                                        "msg": {
+                                            "type": "string",
+                                            "example": ""
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "No se encontraron datos"
+                                        },
+                                        "cant": {
+                                            "type": "integer",
+                                            "example": "0"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "0": "bearer_token"
+                    }
+                ]
+            }
+        },
+        "/api/crearpersona": {
+            "post": {
+                "tags": [
+                    "Persona"
+                ],
+                "summary": "Crear una nueva persona",
+                "description": "Crear una persona de acuerdo a parámetros específicos",
+                "operationId": "112446139a740fa343ad1c494c34d48c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nom",
+                                    "ape",
+                                    "fnac",
+                                    "direcc"
+                                ],
+                                "properties": {
+                                    "nom": {
+                                        "type": "string",
+                                        "example": "Jaime Jeovanny"
+                                    },
+                                    "ape": {
+                                        "type": "string",
+                                        "example": "Cortez Flores"
+                                    },
+                                    "fnac": {
+                                        "type": "string",
+                                        "example": "1985-09-02"
+                                    },
+                                    "direcc": {
+                                        "type": "string",
+                                        "example": "San Salvador, El Salvador"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "No hay error, se han guardado los datos correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "msg": {
+                                            "type": "string",
+                                            "example": "Datos guardados satisfactoriamente"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": ""
+                                        },
+                                        "cant": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error en la petición"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Persona",
+            "description": "Persona"
+        }
+    ]
+}

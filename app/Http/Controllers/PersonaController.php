@@ -4,11 +4,96 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Persona;
+use OpenApi\Attributes as OA;
 use Exception;
 
 class PersonaController extends Controller
 {
-    //
+    
+/**
+ * Summary of obtener
+ * @OA\Get(
+ *      path="/api/obtenerpersona/{id}",
+ *      tags={"Persona"},
+ *      summary="Obtener un registro de persona",
+ *      description="Con este endpoint se obtiene los detalles de un registro de persona",
+ *      security={
+ *          {"bearer_token"}
+ *      },
+ *      @OA\Parameter(
+ *          name="id",
+ *          in="path",
+ *          description="Buscar por ID persona",
+ *          required=true 
+ *      ),
+ *      @OA\Parameter(
+ *          name="Accept-Language",
+ *          in="header",
+ *          description="Parámetro de idioma, aplicar RFC2616",
+ *          @OA\Schema(
+ *              type="string"
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response="200",
+ *          description="No hay error, se devolvieron los datos correctamente",
+ *          @OA\JsonContent(type="object",
+ *              @OA\Property(
+ *                  property="id_persona",
+ *                  type="integer",
+ *                  example="1"
+ *              ),
+ *              @OA\Property(
+ *                  property="nombres",
+ *                  type="string",
+ *                  example="Nelson Neftali"
+ *              ),
+ *              @OA\Property(
+ *                  property="apellidos",
+ *                  type="string",
+ *                  example="Minero Maradiaga"
+ *              ),
+ *              @OA\Property(
+ *                  property="fechadenacimiento",
+ *                  type="string",
+ *                  example="2001-01-30"
+ *              ),
+ *              @OA\Property(
+ *                  property="direccion",
+ *                  type="string",
+ *                  example="SS, El Salvador"
+ *              )
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response="400",
+ *          description="No se encontró la ruta endpoint",
+ *          @OA\JsonContent(type="object",
+ *              @OA\Property(
+ *                  property="success",
+ *                  type="boolean",
+ *                  example="false"
+ *              ),
+ *              @OA\Property(
+ *                  property="msg",
+ *                  type="string",
+ *                  example=""
+ *              ),
+ *              @OA\Property(
+ *                  property="error",
+ *                  type="string",
+ *                  example="No se encontraron datos"
+ *              ),
+ *              @OA\Property(
+ *                  property="cant",
+ *                  type="integer",
+ *                  example="0"
+ *              )
+ *          )
+ *      )
+ * )
+ */
+
     public function obtener($id){
         $datos = Persona::where("id_persona",$id)->get();
         if($datos->isNotEmpty()){
@@ -18,6 +103,53 @@ class PersonaController extends Controller
         } 
     }
 
+
+/**
+ * @OA\Post(
+ *     path="/api/crearpersona",
+ *     tags={"Persona"},
+ *     summary="Crear una nueva persona",
+ *     description="Crear una persona de acuerdo a parámetros específicos",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"nom","ape","fnac","direcc"},
+ *             @OA\Property(property="nom", type="string", example="Jaime Jeovanny"),
+ *             @OA\Property(property="ape", type="string", example="Cortez Flores"),
+ *			   @OA\Property(property="fnac", type="string", example="1985-09-02"),
+ *			   @OA\Property(property="direcc", type="string", example="San Salvador, El Salvador")
+ *         ),
+ *     ),
+  *     @OA\Response(response="200", description="No hay error, se han guardado los datos correctamente",
+ *          @OA\JsonContent(type="object",
+ *               @OA\Property(
+ *                    property="success",
+ *                    type="boolean",
+ *                    example="true"
+ *               ),
+ *               @OA\Property(
+ *                    property="msg",
+ *                    type="string",
+ *                    example="Datos guardados satisfactoriamente"
+ *               ),
+ *               @OA\Property(
+ *                    property="error",
+ *                    type="string",
+ *                    example=""
+ *               ),
+  *               @OA\Property(
+ *                    property="cant",
+ *                    type="integer",
+ *                    example="1"
+ *               )
+ *          )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Error en la petición"
+ *     )
+ * )
+ */
 
     public function guardar(Request $request){
 		$Persona = new Persona();
